@@ -1,0 +1,448 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 14px;
+}
+
+:root {
+    --green-dark: #006d2c;
+    --green-mid: #008c3b;
+    --green-light: #00a63e;
+    --green-bg: #edf7ef;
+    --card-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    --radius: 16px;
+}
+
+body {
+    background: var(--green-bg);
+    color: #222;
+    min-height: 100vh;
+}
+
+/* ── TOAST (reused from main app) ── */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #1a1a1a;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 999;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.toast.green { background: #006d2c; }
+.toast.orange { background: #e65100; }
+
+/* ── WRAPPER (split layout) ── */
+.auth-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ── LEFT PANEL ── */
+.auth-form-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px;
+    background: white;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 420px;
+}
+
+.auth-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+}
+
+.auth-brand i {
+    font-size: 26px;
+    color: var(--green-mid);
+    background: var(--green-bg);
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: sway 3s ease-in-out infinite;
+}
+
+@keyframes sway {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+}
+
+.auth-brand h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--green-dark);
+}
+
+.auth-brand p {
+    font-size: 12px;
+    color: #888;
+    margin-top: 1px;
+}
+
+/* ── TABS (reuses .tabs / .tab-btn look from main app) ── */
+.tabs {
+    display: flex;
+    background: #f0f0f0;
+    border-radius: 40px;
+    padding: 4px;
+    margin-bottom: 24px;
+    gap: 4px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    background: transparent;
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    white-space: nowrap;
+    transition: background 0.2s, color 0.2s;
+}
+
+.tab-btn:hover {
+    background: rgba(255,255,255,0.7);
+}
+
+.active-tab {
+    background: white;
+    font-weight: 700;
+    color: var(--green-dark);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* ── FORMS ── */
+.log-form {
+    display: none;
+    animation: fadeIn 0.25s ease;
+}
+
+.active-form {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.auth-heading {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+}
+
+.auth-subheading {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 22px;
+}
+
+.input-group {
+    margin-bottom: 16px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.input-icon-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon-wrap i:first-child {
+    position: absolute;
+    left: 14px;
+    color: #9db8a8;
+    font-size: 14px;
+}
+
+.input-icon-wrap input {
+    width: 100%;
+    padding: 12px 14px 12px 40px;
+    border-radius: 10px;
+    border: 1.5px solid #d0e8d8;
+    font-size: 14px;
+    outline: none;
+    background: #fafffe;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-icon-wrap input:focus {
+    border-color: var(--green-mid);
+    box-shadow: 0 0 0 3px rgba(0,140,59,0.1);
+}
+
+.toggle-eye {
+    position: absolute;
+    right: 14px;
+    color: #9db8a8;
+    font-size: 14px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.toggle-eye:hover {
+    color: var(--green-mid);
+}
+
+.auth-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #555;
+    cursor: pointer;
+}
+
+.remember-me input {
+    accent-color: var(--green-mid);
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.forgot-link {
+    font-size: 13px;
+    color: var(--green-mid);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.forgot-link:hover {
+    text-decoration: underline;
+}
+
+/* ── BUTTONS (reuses .log-btn look from main app) ── */
+.log-btn {
+    border: none;
+    padding: 13px 24px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    width: 100%;
+    transition: opacity 0.2s, transform 0.1s;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.auth-submit-btn {
+    background: linear-gradient(135deg, var(--green-dark), var(--green-light));
+    color: white;
+}
+
+.auth-submit-btn:hover {
+    opacity: 0.92;
+    transform: scale(1.01);
+}
+
+.auth-submit-btn:active {
+    transform: scale(0.99);
+}
+
+.auth-secondary-btn {
+    background: white;
+    color: var(--green-dark);
+    border: 1.5px solid #d0e8d8;
+}
+
+.auth-secondary-btn:hover {
+    background: var(--green-bg);
+}
+
+.auth-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 18px 0;
+    color: #aaa;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.auth-divider span {
+    padding: 0 12px;
+}
+
+/* ── RIGHT ILLUSTRATION PANEL ── */
+.auth-illustration-panel {
+    flex: 1;
+    background: linear-gradient(160deg, #e8f5e9 0%, var(--green-bg) 50%, #d9f0e0 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-illustration-content {
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    z-index: 1;
+}
+
+.auth-tagline {
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--green-dark);
+    line-height: 1.25;
+    margin-bottom: 12px;
+}
+
+.auth-tree {
+    font-size: 90px;
+    animation: bounce 2.4s ease-in-out infinite;
+    margin: 12px 0 24px;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.auth-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 26px;
+}
+
+.auth-stat-mini {
+    background: white;
+    border-radius: var(--radius);
+    padding: 16px 10px;
+    box-shadow: var(--card-shadow);
+}
+
+.auth-stat-mini i {
+    font-size: 16px;
+    background: linear-gradient(135deg, var(--green-dark), var(--green-light));
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 8px;
+}
+
+.auth-stat-mini h1 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--green-dark);
+}
+
+.auth-stat-mini p {
+    font-size: 10px;
+    color: #888;
+    margin-top: 3px;
+}
+
+.auth-footer-note {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--green-dark);
+    margin-bottom: 4px;
+}
+
+.auth-copyright {
+    font-size: 11px;
+    color: #999;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+    .auth-wrapper {
+        flex-direction: column;
+    }
+
+    .auth-illustration-panel {
+        order: -1;
+        padding: 28px 24px;
+    }
+
+    .auth-tagline {
+        font-size: 26px;
+    }
+
+    .auth-tree {
+        font-size: 60px;
+        margin: 8px 0 16px;
+    }
+
+    .auth-form-panel {
+        padding: 28px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-stats-grid {
+        gap: 8px;
+    }
+
+    .auth-stat-mini {
+        padding: 12px 6px;
+    }
+}

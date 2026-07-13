@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <!-- HEADER -->
+   <header class="header">
+    <div class="logo">
+        <i class="fa-solid fa-leaf"></i>
+        <h2>Carbon Tracker</h2>
+    </div>
+    <div class="top-right">
+        <div class="level-badge" id="headerLevel">🏆 Lv 1</div>
+        <div class="points-badge" id="headerPoints">0 pts</div>
+        <a href="login.html" class="login-link" id="headerAuthBtn">
+            <i class="fa-solid fa-right-to-bracket"></i> Login
+        </a>
+    </div>
+</header>
+
+    <!-- MAIN -->
+    <main class="main-container">
+
+        <!-- ── DASHBOARD ── -->
+        <section id="dashboard" class="page active-page">
+
+            <div class="cards">
+                <div class="card">
+                    <h3>Total Emissions</h3>
+                    <h1 id="totalEmission">0.0 kg</h1>
+                    <p>CO₂ equivalent this month</p>
+                </div>
+
+                <div class="card">
+                    <h3>Monthly Goal</h3>
+                    <h1 id="goalDisplay">100 kg</h1>
+                    <div class="progress-bar">
+                        <div class="progress" id="goalProgress"></div>
+                    </div>
+                    <p id="goalPercent">0% of goal used</p>
+                </div>
+
+                <div class="card">
+                    <h3>Weekly Trend</h3>
+                    <h1 id="trendText">—</h1>
+                    <p>vs last week</p>
+                </div>
+            </div>
+
+            <div class="category-section">
+                <h2>Emissions by Category</h2>
+                <div class="categories">
+                    <div class="category-box">
+                        <i class="fa-solid fa-car"></i>
+                        <h3>Transport</h3>
+                        <p id="transportEmission">0.0 kg</p>
+                    </div>
+                    <div class="category-box">
+                        <i class="fa-solid fa-bolt"></i>
+                        <h3>Energy</h3>
+                        <p id="energyEmission">0.0 kg</p>
+                    </div>
+                    <div class="category-box">
+                        <i class="fa-solid fa-utensils"></i>
+                        <h3>Food</h3>
+                        <p id="foodEmission">0.0 kg</p>
+                    </div>
+                    <div class="category-box">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                        <h3>Shopping</h3>
+                        <p id="shoppingEmission">0.0 kg</p>
+                    </div>
+                    <div class="category-box">
+                        <i class="fa-solid fa-wifi"></i>
+                        <h3>Digital</h3>
+                        <p id="digitalEmission">0.0 kg</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="goal-section">
+                <h2>Set Monthly Goal</h2>
+                <input type="number" id="goalInput" placeholder="Enter goal (kg CO₂)" min="1">
+                <button onclick="updateGoal()">Update Goal</button>
+            </div>
+
+        </section>
+
+
+        <!-- ── LOG PAGE ── -->
+        <section id="log" class="page">
+            <div class="log-box">
+                <h2>Log Activity</h2>
+                <p>Track your daily carbon-producing activities</p>
+
+                <div class="tabs">
+                    <button class="tab-btn active-tab" onclick="switchTab('transport', this)">
+                        <i class="fa-solid fa-car"></i> Transport
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('energy', this)">
+                        <i class="fa-solid fa-bolt"></i> Energy
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('food', this)">
+                        <i class="fa-solid fa-utensils"></i> Food
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('shopping', this)">
+                        <i class="fa-solid fa-bag-shopping"></i> Shopping
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('digital', this)">
+                        <i class="fa-solid fa-wifi"></i> Digital
+                    </button>
+                </div>
+
+                <!-- TRANSPORT -->
+                <div class="log-form active-form" id="transportForm">
+                    <div class="form-grid">
+                        <div>
+                            <label>Transport Type</label>
+                            <select id="transportType">
+                                <option value="Car">🚗 Car</option>
+                                <option value="Bus">🚌 Bus</option>
+                                <option value="Bike">🚲 Bike</option>
+                                <option value="Train">🚆 Train</option>
+                                <option value="Flight">✈️ Flight</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Distance (km)</label>
+                            <input type="number" id="distance" placeholder="0" min="0">
+                        </div>
+                    </div>
+                    <button class="log-btn" onclick="logTransport()">
+                        <i class="fa-solid fa-plus"></i> Log Transport
+                    </button>
+                </div>
+
+                <!-- ENERGY -->
+                <div class="log-form" id="energyForm">
+                    <div class="form-grid">
+                        <div>
+                            <label>Energy Source</label>
+                            <select id="energyType">
+                                <option value="Electricity">⚡ Electricity</option>
+                                <option value="Air Conditioner">❄️ Air Conditioner</option>
+                                <option value="Heater">🔥 Heater</option>
+                                <option value="Gas Stove">🍳 Gas Stove</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Usage Hours</label>
+                            <input type="number" id="energyUsage" placeholder="0" min="0">
+                        </div>
+                    </div>
+                    <button class="log-btn" onclick="logEnergy()">
+                        <i class="fa-solid fa-plus"></i> Log Energy Usage
+                    </button>
+                </div>
+
+                <!-- FOOD -->
+                <div class="log-form" id="foodForm">
+                    <div class="form-grid">
+                        <div>
+                            <label>Food Type</label>
+                            <select id="foodType">
+                                <option value="Vegetarian Meal">🥗 Vegetarian Meal</option>
+                                <option value="Chicken Meal">🍗 Chicken Meal</option>
+                                <option value="Beef Meal">🥩 Beef Meal</option>
+                                <option value="Dairy Products">🧀 Dairy Products</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Servings / Quantity</label>
+                            <input type="number" id="foodQuantity" placeholder="0" min="0">
+                        </div>
+                    </div>
+                    <button class="log-btn" onclick="logFood()">
+                        <i class="fa-solid fa-plus"></i> Log Food
+                    </button>
+                </div>
+
+                <!-- SHOPPING -->
+                <div class="log-form" id="shoppingForm">
+                    <div class="form-grid">
+                        <div>
+                            <label>Shopping Type</label>
+                            <select id="shoppingType">
+                                <option value="Clothes">👕 Clothes</option>
+                                <option value="Electronics">💻 Electronics</option>
+                                <option value="Furniture">🪑 Furniture</option>
+                                <option value="Accessories">👜 Accessories</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Amount Spent ($)</label>
+                            <input type="number" id="shoppingAmount" placeholder="0" min="0">
+                        </div>
+                    </div>
+                    <button class="log-btn" onclick="logShopping()">
+                        <i class="fa-solid fa-plus"></i> Log Shopping
+                    </button>
+                </div>
+
+                <!-- DIGITAL -->
+                <div class="log-form" id="digitalForm">
+                    <div class="form-grid">
+                        <div>
+                            <label>Digital Activity</label>
+                            <select id="digitalType">
+                                <option value="Video Streaming">📺 Video Streaming</option>
+                                <option value="Gaming">🎮 Gaming</option>
+                                <option value="Video Calls">📹 Video Calls</option>
+                                <option value="Social Media">📱 Social Media</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Hours Used</label>
+                            <input type="number" id="digitalHours" placeholder="0" min="0">
+                        </div>
+                    </div>
+                    <button class="log-btn" onclick="logDigital()">
+                        <i class="fa-solid fa-plus"></i> Log Digital Activity
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ── ANALYTICS ── -->
+        <section id="analytics" class="page">
+
+            <div class="analytics-grid">
+                <div class="analytics-card big-card">
+                    <h2>Emissions by Category</h2>
+                    <canvas id="pieChart"></canvas>
+                </div>
+                <div class="analytics-card big-card">
+                    <h2>Daily Emissions Trend</h2>
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </div>
+
+            <div class="analytics-card" style="margin-top:14px;">
+                <h2>Top Activities by Emissions</h2>
+                <div id="topActivitiesList">
+                    <div class="empty-state">
+                        <i class="fa-solid fa-chart-bar"></i>
+                        <p>Log activities to see your top emitters</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- ── TIPS ── -->
+        <section id="tips" class="page">
+
+            <div class="tip-card green-tip">
+                <h2>🤖 Personalised Recommendations</h2>
+                <p>Insights based on your carbon footprint patterns.</p>
+            </div>
+
+            <div class="tip-card blue-tip">
+                <div>
+                    <h3>Start Tracking Your Carbon Footprint</h3>
+                    <p>Begin by logging your daily activities to unlock personalised tips.</p>
+                </div>
+                <span class="impact">HIGH IMPACT</span>
+            </div>
+
+            <div class="tip-card" id="dynamicTipsCard" style="display:none;">
+                <h2>💡 Tips for You</h2>
+                <div class="dynamic-tips-list" id="dynamicTipsList"></div>
+            </div>
+
+            <div class="tree-card">
+                <h2>🌳 Carbon Absorption by Trees</h2>
+                <div class="tree-center">
+                    <div class="tree">🌳</div>
+                    <h1 id="treeCount">0.0</h1>
+                    <p>Trees needed to offset your emissions for one year</p>
+                </div>
+                <div class="mini-cards">
+                    <div class="mini-card">
+                        <h3>Daily Absorption</h3>
+                        <h1 id="dailyAbsorption">0</h1>
+                    </div>
+                    <div class="mini-card">
+                        <h3>Forest Area (m²)</h3>
+                        <h1 id="forestImpact">0</h1>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fact-box">
+                <h3>🌍 Climate Action Facts</h3>
+                <div class="fact-item">
+                    <h4>🌲 Reforestation Impact</h4>
+                    <p>Planting 1 billion trees could absorb up to 2.5 billion tonnes of CO₂ per year — one of the most cost-effective climate solutions.</p>
+                </div>
+                <div class="fact-item">
+                    <h4>🌊 Ocean Absorption</h4>
+                    <p>Oceans absorb about 25% of global CO₂ emissions annually, but rising acidity threatens marine ecosystems.</p>
+                </div>
+                <div class="fact-item">
+                    <h4>🚗 Transport Choices</h4>
+                    <p>Switching from a car to public transport for a 10 km daily commute saves roughly 1.5 tonnes of CO₂ per year.</p>
+                </div>
+                <div class="fact-item">
+                    <h4>🎯 Your Impact Matters</h4>
+                    <p>The average person can reduce their footprint by 20–30% through simple lifestyle changes like diet, travel, and energy use.</p>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- ── PROFILE ── -->
+        <section id="profile" class="page">
+
+            <div class="profile-header">
+                <div>
+                    <h1 id="profileLevel">Level 1</h1>
+                    <h2 id="profileTitle">Eco Beginner</h2>
+                </div>
+                <div class="profile-right">
+                    <h1 id="profilePoints">0</h1>
+                    <p>Total Points</p>
+                </div>
+            </div>
+
+            <div class="progress-bar big-progress">
+                <div class="progress" id="xpProgress"></div>
+            </div>
+            <p class="xp-label" id="xpLabel">0 / 100 XP to next level</p>
+
+            <div class="stats-grid">
+                <div class="stat-card orange">
+                    <h1 id="streakCount">0</h1>
+                    <p>Day Streak 🔥</p>
+                </div>
+                <div class="stat-card purple">
+                    <h1 id="activityCount">0</h1>
+                    <p>Activities</p>
+                </div>
+                <div class="stat-card yellow">
+                    <h1 id="achievementCount">0</h1>
+                    <p>Achievements</p>
+                </div>
+            </div>
+
+            <div class="achievement-box">
+                <h2>🏅 Achievements</h2>
+                <div class="achievement-grid">
+                    <div class="achievement-card" id="ach-first">
+                        <h3>🌱 Getting Started</h3>
+                        <p>Log your first activity</p>
+                    </div>
+                    <div class="achievement-card" id="ach-week">
+                        <h3>🔥 Week Warrior</h3>
+                        <p>Log activities 7 days in a row</p>
+                    </div>
+                    <div class="achievement-card" id="ach-ten">
+                        <h3>📊 Data Driven</h3>
+                        <p>Log 10 activities total</p>
+                    </div>
+                    <div class="achievement-card" id="ach-fifty">
+                        <h3>🌍 Eco Warrior</h3>
+                        <p>Log 50 activities total</p>
+                    </div>
+                    <div class="achievement-card" id="ach-goal">
+                        <h3>🎯 Goal Setter</h3>
+                        <p>Set a monthly goal</p>
+                    </div>
+                    <div class="achievement-card" id="ach-green">
+                        <h3>💚 Staying Green</h3>
+                        <p>Stay under goal for a month</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="personal-best-box">
+                <h2>📈 Personal Bests</h2>
+                <div class="best-item orange-light">
+                    <span>🔥 Longest Streak</span>
+                    <span class="badge orange-badge" id="bestStreak">0 days</span>
+                </div>
+                <div class="best-item blue-light">
+                    <span>🎯 Activities Logged</span>
+                    <span class="badge blue-badge" id="bestActivities">0</span>
+                </div>
+                <div class="best-item purple-light">
+                    <span>⭐ Current Level</span>
+                    <span class="badge purple-badge" id="bestLevel">Level 1</span>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- BOTTOM NAVIGATION -->
+    <nav class="bottom-nav">
+        <button onclick="showPage('dashboard')" id="nav-dashboard" class="active-nav">
+            <i class="fa-solid fa-table-columns"></i>
+            <span>Dashboard</span>
+        </button>
+        <button onclick="showPage('log')" id="nav-log">
+            <i class="fa-solid fa-circle-plus"></i>
+            <span>Log</span>
+        </button>
+        <button onclick="showPage('analytics')" id="nav-analytics">
+            <i class="fa-solid fa-chart-column"></i>
+            <span>Analytics</span>
+        </button>
+        <button onclick="showPage('tips')" id="nav-tips">
+            <i class="fa-solid fa-lightbulb"></i>
+            <span>Tips</span>
+        </button>
+        <button onclick="showPage('profile')" id="nav-profile">
+            <i class="fa-solid fa-user"></i>
+            <span>Profile</span>
+        </button>
+    </nav>
+
+<<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="api.js"></script>
+<script src="dashboard.js"></script>
+<script src="activity.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

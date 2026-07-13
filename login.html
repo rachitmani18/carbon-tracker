@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Tracker — Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <div class="auth-wrapper">
+
+        <!-- ── LEFT: FORM PANEL ── -->
+        <div class="auth-form-panel">
+
+            <div class="auth-card">
+
+                <div class="auth-brand">
+                    <i class="fa-solid fa-leaf"></i>
+                    <div>
+                        <h2>Carbon Tracker</h2>
+                        <p>Track. Reduce. Sustain.</p>
+                    </div>
+                </div>
+
+                <div class="tabs auth-tabs">
+                    <button class="tab-btn active-tab" id="loginTabBtn" onclick="switchAuthTab('login', this)">
+                        <i class="fa-solid fa-right-to-bracket"></i> Login
+                    </button>
+                    <button class="tab-btn" id="signupTabBtn" onclick="switchAuthTab('signup', this)">
+                        <i class="fa-solid fa-user-plus"></i> Sign Up
+                    </button>
+                </div>
+
+                <!-- ── LOGIN FORM ── -->
+                <form class="log-form active-form" id="loginForm" onsubmit="return handleLogin(event)">
+
+                    <h1 class="auth-heading">Welcome Back!</h1>
+                    <p class="auth-subheading">Login to continue tracking your carbon footprint.</p>
+
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <div class="input-icon-wrap">
+                            <i class="fa-solid fa-envelope"></i>
+                            <input type="email" id="loginEmail" placeholder="Email address" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Password</label>
+                        <div class="input-icon-wrap">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="loginPassword" placeholder="Password" required>
+                            <i class="fa-solid fa-eye toggle-eye" onclick="togglePassword('loginPassword', this)"></i>
+                        </div>
+                    </div>
+
+                    <div class="auth-row">
+                        <label class="remember-me">
+                            <input type="checkbox" id="rememberMe">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" class="forgot-link" onclick="handleForgotPassword(event)">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="log-btn auth-submit-btn">
+                        Login <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                    <div class="auth-divider"><span>OR</span></div>
+
+                    <button type="button" class="log-btn auth-secondary-btn" onclick="switchAuthTab('signup', document.getElementById('signupTabBtn'))">
+                        <i class="fa-solid fa-user-plus"></i> Create New Account
+                    </button>
+
+                </form>
+
+                <!-- ── SIGN UP FORM ── -->
+                <form class="log-form" id="signupForm" onsubmit="return handleSignup(event)">
+
+                    <h1 class="auth-heading">Create Account</h1>
+                    <p class="auth-subheading">Start your journey to a smaller carbon footprint.</p>
+
+                    <div class="input-group">
+                        <label>Full Name</label>
+                        <div class="input-icon-wrap">
+                            <i class="fa-solid fa-user"></i>
+                            <input type="text" id="signupName" placeholder="Full name" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <div class="input-icon-wrap">
+                            <i class="fa-solid fa-envelope"></i>
+                            <input type="email" id="signupEmail" placeholder="Email address" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Password</label>
+                        <div class="input-icon-wrap">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="signupPassword" placeholder="Password" minlength="6" required>
+                            <i class="fa-solid fa-eye toggle-eye" onclick="togglePassword('signupPassword', this)"></i>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Confirm Password</label>
+                        <div class="input-icon-wrap">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="signupConfirmPassword" placeholder="Confirm password" minlength="6" required>
+                            <i class="fa-solid fa-eye toggle-eye" onclick="togglePassword('signupConfirmPassword', this)"></i>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="log-btn auth-submit-btn">
+                        Create Account <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                    <div class="auth-divider"><span>OR</span></div>
+
+                    <button type="button" class="log-btn auth-secondary-btn" onclick="switchAuthTab('login', document.getElementById('loginTabBtn'))">
+                        <i class="fa-solid fa-right-to-bracket"></i> Back to Login
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <!-- ── RIGHT: ILLUSTRATION PANEL ── -->
+        <div class="auth-illustration-panel">
+
+            <div class="auth-illustration-content">
+
+                <h1 class="auth-tagline">Small Steps,<br>Big Impact.</h1>
+
+                <div class="auth-tree">🌳</div>
+
+                <div class="auth-stats-grid">
+                    <div class="auth-stat-mini">
+                        <i class="fa-solid fa-leaf"></i>
+                        <h1 id="illustrationSaved">0 kg</h1>
+                        <p>CO₂ reduced</p>
+                    </div>
+                    <div class="auth-stat-mini">
+                        <i class="fa-solid fa-tree"></i>
+                        <h1 id="illustrationTrees">0</h1>
+                        <p>Trees saved</p>
+                    </div>
+                    <div class="auth-stat-mini">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <h1 id="illustrationScore">—</h1>
+                        <p>Sustainability score</p>
+                    </div>
+                </div>
+
+                <p class="auth-footer-note">
+                    <i class="fa-solid fa-seedling"></i> Save Earth One Step At A Time
+                </p>
+                <p class="auth-copyright">© 2026 Carbon Tracker. All rights reserved.</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--
+        BUG FIX: this file was previously also loading api.js, dashboard.js,
+        activity.js, and app.js - those belong ONLY on index.html. Loading
+        them here made app.js's DOMContentLoaded handler run on the login
+        page too, which called refreshAllData() and tried to update DOM
+        elements (like #totalEmission) that don't exist on this page at all,
+        throwing errors. login.html only ever needs login.js.
+    -->
+    <script src="login.js"></script>
+</body>
+</html>
