@@ -157,7 +157,7 @@ GitHub:
 https://github.com/rachitmani18
 
 LinkedIn:
-(Add your LinkedIn profile here)
+(https://www.linkedin.com/in/rachitmani-srivastava-a37484383/)
 
 ---
 
